@@ -24,9 +24,10 @@ public class ControlTabla {
     
     /**
      * Añade una fila en el modelo, al final del mismo
+     * @param cargaInicio - para saber si el oriden de datos es de la bbdd (true) o desde la aplicacion (false)
      */
-    public void anhadeFila (TareaBean tarea){
-        modelo.anyadeTarea(tarea);
+    public void anhadeFila (TareaBean tarea, boolean cargaInicio){
+        modelo.anyadeTarea(tarea, cargaInicio);
     }
     
     /** Elimina la primera fila del modelo */

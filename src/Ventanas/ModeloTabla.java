@@ -109,13 +109,16 @@ public class ModeloTabla implements TableModel{
     
     /**
      * Anyade una tarea al final de la tabla
+     * @param cargaInicio - para saber si el oriden de datos es de la bbdd (true) o desde la aplicacion (false) 
      */
     @SuppressWarnings("unchecked")
-	public void anyadeTarea (TareaBean nuevaTarea){
+	public void anyadeTarea (TareaBean nuevaTarea, boolean cargaInicio){
     	try{
 	        // Anyade la persona al modelo 
 	        datos.add (nuevaTarea);
-	        new GestorTareas().nuevaTarea(nuevaTarea);
+	        if(!cargaInicio){
+	        	new GestorTareas().nuevaTarea(nuevaTarea);
+	        }
 	        
 	        // Avisa a los suscriptores creando un TableModelEvent...
 	        TableModelEvent evento = new TableModelEvent (this, this.getRowCount()-1,

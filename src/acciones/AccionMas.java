@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -79,13 +80,9 @@ public class AccionMas {
     private void cargarDatosTablas() throws Exception {
 		try{
 			for(Entry<Integer, TareaBean> objTarea : objGT.obtenerTareasListado().entrySet()){
-				//Actualizamos el listado de tareas para rehabilitar
-				if(objTarea.getValue().isBajaLogica()){
-					controlRehabilitar.anyadeFila(objTarea.getValue());
-				}
 				//Actualizamos el listado de tareas
-				else{
-					control.anhadeFila(objTarea.getValue());
+				if(!objTarea.getValue().isBajaLogica()){
+					control.anhadeFila(objTarea.getValue(), true);
 				}
 			}
 		}
@@ -112,7 +109,9 @@ public class AccionMas {
 	        	        	try {
 	        	        		encogerVentana(botonMas);
 	        	        	} catch (Exception e1) {
-	        	        		log.log(Level.SEVERE, CLASE + "::redimensionar()[encogerVentana]: "  + e1.getMessage());
+	        	        		String msgErr = CLASE + "::redimensionar()[encogerVentana]: "  + e1.getMessage();
+	        	        		JOptionPane.showMessageDialog(panelSecundario, msgErr, "Error redimensionar() !!", JOptionPane.ERROR_MESSAGE);
+	        	        		log.log(Level.SEVERE, msgErr);
 	        	        	}
 		            	}
 	        	        else{
@@ -120,7 +119,9 @@ public class AccionMas {
 	        	        	try {
 	        	        		agrandarVentana(botonMas);
 	        	        	} catch (Exception e1) {
-	        	        		log.log(Level.SEVERE, CLASE + "::redimensionar()[agrandarVentana]: "  + e1.getMessage());
+	        	        		String msgErr = CLASE + "::redimensionar()[agrandarVentana]: "  + e1.getMessage();
+	        	        		JOptionPane.showMessageDialog(panelSecundario, msgErr, "Error redimensionar() !!", JOptionPane.ERROR_MESSAGE);
+	        	        		log.log(Level.SEVERE, msgErr);
 	        	        	}
 	        	        }
 		            }
@@ -279,7 +280,9 @@ public class AccionMas {
 				         try {
 							Utilidades.actualizarCBXTareas(panelPrincipal, objGT);
 				         } catch (Exception e1) {
-							log.log(Level.SEVERE, "Error al actualizar el combo de tareas: " + e1.getMessage());
+				        	 String msgErr = "Error al actualizar el combo de tareas: " + e1.getMessage();
+				        	 JOptionPane.showMessageDialog(panelSecundario, msgErr, "Error panelListadoTareas() !!", JOptionPane.ERROR_MESSAGE);
+				        	 log.log(Level.SEVERE, msgErr);
 				         }
 			         }
 			      }
@@ -358,7 +361,9 @@ public class AccionMas {
 				         try {
 							Utilidades.actualizarCBXTareas(panelPrincipal, objGT);
 				         } catch (Exception e1) {
-							log.log(Level.SEVERE, "Error al actualizar el combo de tareas: " + e1.getMessage());
+				        	 String msgErr = "Error al actualizar el combo de tareas: " + e1.getMessage();
+				        	 JOptionPane.showMessageDialog(panelSecundario, msgErr, "Error tabRehabilitarTareas() !!", JOptionPane.ERROR_MESSAGE);
+				        	 log.log(Level.SEVERE, msgErr);
 				         }
 
 			        	 log.log(Level.INFO, "Rehabilitar Tarea ["+fila+"]["+columna+"]: " + tarea.getNombre());
@@ -395,7 +400,7 @@ public class AccionMas {
 			tabPrincipal.addTab("Datos tareas", tabListadoDatosTareas);
 		}
 		catch (Exception e) {
-			throw new Exception("AccionMas::tabListadoDatosTareas(): " + e.getMessage());
+			throw new Exception(CLASE + "::tabListadoDatosTareas(): " + e.getMessage());
 		}
 	}
 

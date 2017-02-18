@@ -51,9 +51,13 @@ public class ControlTablaRehabilitar {
 	}
 
 
+	/**
+	 * Metodo para añadir una nueva fila a la tabla de rehabilitar
+	 * @param tarea - referencia al objeto con los datos de la tarea
+	 */
 	public void anyadeFila(final TareaBean tarea) {
 		try{
-			modelo.anyadeTarea(tarea);			
+			modelo.anyadeTarea(tarea);
 		}
 		catch (Exception e) {
 			log.log(Level.SEVERE, CLASE + "::anyadeFila(" + tarea.getId() + "): "  + e.getMessage());
