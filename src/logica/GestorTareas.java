@@ -108,6 +108,73 @@ public class GestorTareas {
     public TareaBean obtenerTarea(int id){
     	return memoria.getHmTareas().get(id);
     }
+    
+    /**
+     * Metodo para obtener la tarea a traves de su nombre
+     * @param nombreTarea - Nombre de la tarea
+     * @return Id de la tarea
+     * @throws Exception 
+     */
+    public int obtenerTarea(String nombreTarea) throws Exception {
+    	int id = -1;
+
+		try{
+			for (Entry<Integer, TareaBean> objTarea : memoria.getHmTareas().entrySet()) {
+				if(objTarea.getValue().getNombre().equals(nombreTarea)){
+					id = objTarea.getKey();
+					break;
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new Exception(CLASE + "::obtenerTarea("+nombreTarea+"): " + e.getMessage());
+		}
+
+		return id;
+	}
+
+
+    /**
+     * Metodo para comprobar que existe la tarea en el listado de tareas
+     * @param tarea - refencia a la tarea que se desea comprobar
+     * @return true: la tarea existe; false: la tarea no existe
+     * @throws Exception
+     */
+	public boolean existeTarea(final TareaBean tarea) throws Exception {
+		boolean resultado = false;
+
+		try{
+			for (Entry<Integer, TareaBean> objTarea : memoria.getHmTareas().entrySet()) {
+				if(objTarea.getValue().getNombre().toUpperCase().trim().equals(tarea.getNombre().toUpperCase().trim())){
+					resultado = true;
+					break;
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new Exception(CLASE + "::existeTarea("+tarea.getNombre()+"): " + e.getMessage());
+		}
+
+		return resultado;
+	}
+
+
+	/**
+	 * Metodo para obtener el maximo ID del listado de datos de las tareas
+	 * @return
+	 */
+	public int getMaximoIdDatosTarea() {
+		return memoria.getIdMaxDatosTareas();
+	}
+
+
+	/**
+	 * Añadimos los datos de una nueva tarea a la lista
+	 * @param datosTarea - datos de una nueva tarea
+	 */
+	public void setDatosTarea(final DatosTareasBean datosTarea) {
+		memoria.addDatosTarea(datosTarea);
+	}
 
 
     /**
@@ -160,4 +227,5 @@ public class GestorTareas {
     	}
 		
 	}
+
 }

@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import logica.GestorTareas;
 
 public class Utilidades {
+	private final static String CLASE = Utilidades.class.getName();
 
 	/**
 	 * Metodo para obtener la fecha actual
@@ -28,7 +29,7 @@ public class Utilidades {
 			resultado = sdf.format(c1.getTime());
 		}
 		catch (Exception e) {
-			throw new Exception("Utilidades::obtenerFecha(): " + e.getMessage());
+			throw new Exception(CLASE + "::obtenerFecha(): " + e.getMessage());
 		}
 		
 		return resultado;
@@ -48,7 +49,7 @@ public class Utilidades {
 			resultado = sdf.format(c1.getTime());
 		}
 		catch (Exception e) {
-			throw new Exception("Utilidades::obtenerFecha(): " + e.getMessage());
+			throw new Exception(CLASE + "::obtenerFecha(): " + e.getMessage());
 		}
 		
 		return resultado;

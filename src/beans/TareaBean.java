@@ -39,11 +39,11 @@ public class TareaBean {
 
     public TareaBean(String strNombre, String strDesc, String cod1, String cod2, String cod3){
     	id          = -1;
-    	nombre      = strNombre;
-    	descripcion = strDesc;
-    	codigo1     = cod1;
-    	codigo2     = cod2;
-    	codigo3     = cod3;
+    	nombre      = strNombre.trim();
+    	descripcion = strDesc.trim();
+    	codigo1     = cod1.trim();
+    	codigo2     = cod2.trim();
+    	codigo3     = cod3.trim();
     	bajaLogica  = false;
     }
     
@@ -59,11 +59,11 @@ public class TareaBean {
 		try{
 			resultado = new Vector<String>();
 			resultado.add(String.valueOf(id));
-			resultado.add(nombre);
-			resultado.add(descripcion);
-			resultado.add(codigo1);
-			resultado.add(codigo2);
-			resultado.add(codigo3);
+			resultado.add(nombre.trim());
+			resultado.add(descripcion.trim());
+			resultado.add(codigo1.trim());
+			resultado.add(codigo2.trim());
+			resultado.add(codigo3.trim());
 			resultado.add(String.valueOf(bajaLogica));
 		}
 		catch (Exception e) {

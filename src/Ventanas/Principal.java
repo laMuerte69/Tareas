@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -12,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import acciones.AccionBotonPlay;
 import acciones.AccionCerrar;
 import acciones.AccionMas;
 import comun.Constantes;
@@ -19,6 +21,9 @@ import comun.Utilidades;
 import logica.GestorTareas;
 
 public class Principal {
+
+	private final static String CLASE = Principal.class.getName();
+	protected static Logger log = Logger.getLogger(CLASE);
 
     private int ancho;
     private int alto;
@@ -81,6 +86,7 @@ public class Principal {
 			ventana.addWindowListener(new AccionCerrar(ventana, objGT).btnCerrar());
 		
 			//Icono de la ventana
+			//TODO: poner la ruta relativa
 			Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Workspace_solvencia\\Tareas\\Resources\\icono.png");
 			ventana.setIconImage(icon); 
 	
@@ -94,7 +100,7 @@ public class Principal {
 			//--------------------------------------------------------------------//
 			// Botones de la ventana
 			//--------------------------------------------------------------------//
-			crearBotones(panelPrincipal);
+			crearBotonPlay(panelPrincipal);
 	
 	
 			//--------------------------------------------------------------------//
@@ -123,15 +129,19 @@ public class Principal {
 			ventana.setVisible(true);     //making the frame visible
 		}
 		catch (Exception e) {
-			String msgErr = "Principal::Crear() " + e.getMessage();
-			throw new Exception(msgErr);
+			throw new Exception(CLASE + "::Crear() " + e.getMessage());
 		}
     }
 
 
-	private void crearBotones(JPanel panelSuperior) throws Exception {
+    /**
+     * Metodo para crear el boton de "Play"
+     * @param panelSuperior
+     * @throws Exception
+     */
+	private void crearBotonPlay(JPanel panelSuperior) throws Exception {
 		try{
-			btnPlay = new JButton("Play");
+			btnPlay = new JButton(Constantes.BTN_PLAY);
 			btnPlay.setName("btnPlay");
 			
 			if(cbxTareas.getItemCount() == 0){
@@ -140,11 +150,13 @@ public class Principal {
 			else{
 				btnPlay.setEnabled(true);    			
 			}
-			
+
+			btnPlay.addActionListener(new AccionBotonPlay(panelSuperior, objGT).tiempoTarea());
+			btnPlay.setActionCommand("btnPlay");
 			panelSuperior.add(btnPlay);
 		}
 		catch (Exception e) {
-			throw new Exception("Principal::crearBotones(): " + e.getMessage());
+			throw new Exception(CLASE + "::crearBotones(): " + e.getMessage());
 		}
     }
 
@@ -170,7 +182,7 @@ public class Principal {
     		panelSuperior.add(cbxTareas);
     	}
     	catch (Exception e) {
-			throw new Exception("Principal::crearListaTareas(): " + e.getMessage());
+			throw new Exception(CLASE + "::crearListaTareas(): " + e.getMessage());
 		}
     }
     
@@ -188,19 +200,24 @@ public class Principal {
     }
 
 
+    /**
+     * Metodo para crear el boton "+" que desplegara o contraera el panel inferior
+     * @param ventana
+     * @param panelSuperior
+     * @throws Exception
+     */
     private void crearBotonMas(JFrame ventana, JPanel panelSuperior) throws Exception {
 		JButton btnMas = null;
 	
 		try{
-		    btnMas = new JButton("+");
+		    btnMas = new JButton(Constantes.BTN_MAS_MAS);
 		    btnMas.setName("btnMas");
 		    btnMas.addActionListener(new AccionMas(ventana, panelSuperior, objGT).redimensionar());
 		    btnMas.setActionCommand("btnMas");
 		    panelSuperior.add(btnMas);
 		}
 		catch (Exception e) {
-		    String msgErr = "Error al redimiensionar la ventana: " + e.getMessage();
-		    throw new Exception(msgErr);
+		    throw new Exception(CLASE + "::crearBotonMas(): Error al redimiensionar la ventana: " + e.getMessage());
 		}
     }
 
@@ -222,8 +239,7 @@ public class Principal {
 			//TODO implementar actualizar listado datos tareas
 		}
 		catch (Exception e) {
-			String msgErr = "Principal::obtenerDatosTareas() " + e.getMessage();
-			throw new Exception(msgErr);
+			throw new Exception(CLASE + "::obtenerDatosTareas() " + e.getMessage());
 		}
 	}
 

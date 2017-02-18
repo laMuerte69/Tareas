@@ -166,16 +166,22 @@ public class PanelAltaTareas extends JPanel {
 					descrp = tbxDescripcion.getText();
 					
 					if(nombre.isEmpty()){
-						JOptionPane.showMessageDialog(null, "El campo \"Nombre Tarea\" no puede estar vacio");
+						JOptionPane.showMessageDialog(null, "El campo \"Nombre Tarea\" no puede estar vacio", "Nombre vacio", JOptionPane.WARNING_MESSAGE);
 					}
 					else if(descrp.isEmpty()){
-						JOptionPane.showMessageDialog(null, "El campo \"Descripcion\" no puede estar vacio");
+						JOptionPane.showMessageDialog(null, "El campo \"Descripcion\" no puede estar vacio", "Descripcion vacia", JOptionPane.WARNING_MESSAGE);
 					}
 					else{
 						tarea = new TareaBean(nombre, descrp, tbxCodigo1.getText(), tbxCodigo2.getText(), tbxCodigo3.getText());
-						control.anhadeFila(tarea, false);
-						Utilidades.actualizarCBXTareas(panelPrincipal, objGestorTareas);
-						limpiar();
+						
+						if(!objGestorTareas.existeTarea(tarea)){
+							control.anhadeFila(tarea, false);
+							Utilidades.actualizarCBXTareas(panelPrincipal, objGestorTareas);
+							limpiar();
+						}
+						else{
+							JOptionPane.showMessageDialog(null, "El campo \"Nombre Tarea\" ya existe entre las tareas que estan dadas de alta/baja", "Tarea duplicada", JOptionPane.WARNING_MESSAGE);
+						}
 					}
 				}
 				catch (Exception ex) {

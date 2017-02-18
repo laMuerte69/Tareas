@@ -13,5 +13,15 @@ public class Constantes {
 	public static final int ALTO_TAB_PANEL_SEC    = 160;
 	public static final int ANCHO_TABLA_TAREAS    = 458;
 	public static final int ALTO_TABLA_TAREAS     = 155;
+	
+	//Nombre del boton play cuando no esta contando el tiempo
+	public static final String BTN_PLAY           = "Play";
+	//Nombre del boton play cuando    esta contando el tiempo
+	public static final String BTN_STOP           = "Stop";
+	
+	//Nombre del boton MAS cuando esta desplegado
+	public static final String BTN_MAS_MENOS   = "-";
+	//Nombre del boton MAS cuando esta contraido
+	public static final String BTN_MAS_MAS     = "+";
 
 }

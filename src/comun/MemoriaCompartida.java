@@ -17,6 +17,7 @@ public class MemoriaCompartida {
     private HashMap<Integer, TareaBean> hmTareas;       // hashMap con las tareas
     private boolean redimensionarVentana;
     private DatosBBDD objBBDD;
+	private int idMaxDatosTareas; //maximo ID del listado de datos de Tareas
 
 
 
@@ -24,11 +25,12 @@ public class MemoriaCompartida {
      * Constructor de la clase
      */
     public MemoriaCompartida(){
-		instance       = null;
-		lstDatosTareas = new ArrayList<DatosTareasBean>();
-		hmTareas       = new HashMap<Integer, TareaBean>();
+		instance         = null;
+		lstDatosTareas   = new ArrayList<DatosTareasBean>();
+		hmTareas         = new HashMap<Integer, TareaBean>();
 		redimensionarVentana = false;
-		objBBDD        = new DatosBBDD();
+		objBBDD          = new DatosBBDD();
+    	idMaxDatosTareas = 0;
     }
     
 
@@ -110,8 +112,23 @@ public class MemoriaCompartida {
 	/**
 	 * @param lstDatosTareas the lstDatosTareas to set
 	 */
-	public final void setLstDatosTareas(ArrayList<DatosTareasBean> lstDatosTareas) {
+	public final void setLstDatosTareas(final ArrayList<DatosTareasBean> lstDatosTareas) {
+		int maxId = 0;
+
 		this.lstDatosTareas = lstDatosTareas;
+		
+		for (DatosTareasBean tarea : lstDatosTareas) {
+			if(maxId < tarea.getId()){
+				maxId = tarea.getId();
+			}
+		}
+		idMaxDatosTareas = maxId;
+	}
+	public final void addDatosTarea(final DatosTareasBean datosTarea) {
+		this.lstDatosTareas.add(datosTarea);
+		if(idMaxDatosTareas < datosTarea.getId()){
+			idMaxDatosTareas = datosTarea.getId();
+		}
 	}
 
 
@@ -129,4 +146,13 @@ public class MemoriaCompartida {
 	public final DatosBBDD getObjBBDD() {
 		return objBBDD;
 	}
+
+
+	/**
+	 * @return the idMaxDatosTareas
+	 */
+	public final int getIdMaxDatosTareas() {
+		return idMaxDatosTareas;
+	}
+	
 }

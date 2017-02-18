@@ -100,7 +100,6 @@ public class AccionMas {
 
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
-		            MemoriaCompartida memoria = MemoriaCompartida.getInstance();
 		            JButton botonMas = (JButton) e.getSource();
 	
 		            if(botonMas.getActionCommand().equals("btnMas")){
@@ -129,8 +128,7 @@ public class AccionMas {
 		    };
 		}
 		catch (Exception e) {
-		    String msgErr = "AccionMas::redimensionar(): " + e.getMessage();
-		    throw new Exception(msgErr);
+		    throw new Exception(CLASE + "::redimensionar(): " + e.getMessage());
 		}
 
 	return resultado;
@@ -145,16 +143,13 @@ public class AccionMas {
     private void encogerVentana(JButton botonMas) throws Exception {
 		try{
 		    ventana.setSize(dimension);
-		    botonMas.setText("+");
+		    botonMas.setText(Constantes.BTN_MAS_MAS);
 		    
 		    //Configuramos el panel secundario
 		    panelSecundario.setVisible(false);
-		    
-		    memoria.escribirTraza("Encongemos la ventana");
 		}
 		catch (Exception e) {
-		    String msgErr = "AccionMas::encogerVentana(): " + e.getMessage();
-		    throw new Exception(msgErr);
+		    throw new Exception(CLASE + "::encogerVentana(): " + e.getMessage());
 		}
     }
 
@@ -169,7 +164,7 @@ public class AccionMas {
 		    double x = dimension.getWidth();
 		    double y = dimension.getHeight();
 	
-		    botonMas.setText("-");
+		    botonMas.setText(Constantes.BTN_MAS_MENOS);
 		    ventana.setSize((int)x, (int)y * 3);
 		    
 		    //Configuramos el panel secundario
@@ -184,8 +179,6 @@ public class AccionMas {
 		    	
 		    	cargarDatosTablas();
 		    }
-		    
-		    log.log(Level.INFO, "Agrandamos la ventana");
 		}
 		catch (Exception e) {
 		    throw new Exception(CLASE + "::encogerVentana(): " + e.getMessage());
@@ -214,7 +207,7 @@ public class AccionMas {
 			panel.add(tabPrincipal);
 		}
 		catch (Exception e) {
-			throw new Exception("AccionMas::crearPanelSecundario(): " + e.getMessage());
+			throw new Exception(CLASE + "::crearPanelSecundario(): " + e.getMessage());
 		}
 	}
 
@@ -237,7 +230,7 @@ public class AccionMas {
 			tabPrincipal.addTab("Listado tareas", tabListadoTareas);
 		}
 		catch (Exception e) {
-			throw new Exception("AccionMas::tabListadoTareas(): " + e.getMessage());
+			throw new Exception(CLASE + "::tabListadoTareas(): " + e.getMessage());
 		}
 	}
 
@@ -295,7 +288,7 @@ public class AccionMas {
 			tabAltaTareas.add(scrollListadoTareas);	        
 		}
 		catch (Exception e) {
-			throw new Exception("AccionMas::panelListadoTareas(): " + e.getMessage());
+			throw new Exception(CLASE + "::panelListadoTareas(): " + e.getMessage());
 		}
 	}
 
@@ -320,7 +313,7 @@ public class AccionMas {
 			tabPrincipal.addTab("Alta tareas", tabAltaTareas);
 		}
 		catch (Exception e) {
-			throw new Exception("AccionMas::tabAltaTareas(): " + e.getMessage());
+			throw new Exception(CLASE + "::tabAltaTareas(): " + e.getMessage());
 		}
 	}
 
@@ -378,7 +371,7 @@ public class AccionMas {
 			tabPrincipal.addTab("Rehabilitar tareas", scrollLstRehabilitarTareas);
 		}
 		catch (Exception e) {
-			throw new Exception("AccionMas::tabRehabilitarTareas(): " + e.getMessage());
+			throw new Exception(CLASE + "::tabRehabilitarTareas(): " + e.getMessage());
 		}
 	}
 	

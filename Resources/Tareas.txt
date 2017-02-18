@@ -6,3 +6,4 @@
 - Gestionar las tareas con los tiempos
 - Exportar a Excel
 - Importar a Excel
+- Crar hilo que actualice el tiempo cada 60 segundos
