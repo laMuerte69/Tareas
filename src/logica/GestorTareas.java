@@ -6,6 +6,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import beans.DatosTareasBean;
 import beans.TareaBean;
 import comun.MemoriaCompartida;
 
@@ -108,32 +109,54 @@ public class GestorTareas {
     	return memoria.getHmTareas().get(id);
     }
 
+
     /**
-     * Metodo para guardar todas las tareas
+     * Metodo para guardar las tareas y sus datos en la BBDD
      * @throws Exception 
      */
     public void guardarTareasBBDD() throws Exception{
-    	//TODO: implementar
-    	//	guardar las tareas en la BBDD o en el fichero de tareas
+
     	try{
-	    
+		    //obtenemos el mayor ID
+		    for (Entry<Integer, TareaBean> objTarea : memoria.getHmTareas().entrySet()) {
+		    	memoria.getObjBBDD().guardarTareas(objTarea.getValue());
+		    }
     		log.log(Level.INFO, "Se han guardado las tareas");
-    	
     	}
     	catch (Exception e) {
     		throw new Exception("Error al guardar tareas en BBDD: " + e.getMessage());
     	}
+
+    	try{
+    		for (DatosTareasBean datosTarea : memoria.getLstDatosTareas()) {
+		    	memoria.getObjBBDD().guardarDatosTarea(datosTarea);
+		    }
+    		log.log(Level.INFO, "Se han guardado los datos de las tareas");
+    	}
+    	catch (Exception e) {
+    		throw new Exception("Error al guardar los datos de las tareas en BBDD: " + e.getMessage());
+    	}
     }
 
 
+    /**
+     * Metodo para cargar las tareas y los datos de las tareas desde BBDD
+     * @throws Exception
+     */
 	public void cargarTareasBBDD() throws Exception {
 
-		
     	try{
-    		//TODO: Cargar aqui los datos de las tareas de la bbDD
+    		memoria.setHmTareas(memoria.getObjBBDD().cargarTareas());
     	}
     	catch (Exception e) {
     		throw new Exception("Error al cargar tareas de BBDD: " + e.getMessage());
+    	}
+
+    	try{
+    		memoria.setLstDatosTareas(memoria.getObjBBDD().cargarDatosTareas());
+    	}
+    	catch (Exception e) {
+    		throw new Exception("Error al cargar los datos de las tareas de BBDD: " + e.getMessage());
     	}
 		
 	}

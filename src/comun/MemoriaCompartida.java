@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import DAO.DatosBBDD;
+import beans.DatosTareasBean;
 import beans.TareaBean;
 
 public class MemoriaCompartida {
 
-    private static MemoriaCompartida instance;    // instancia unica de la clase
-
-    private ArrayList<TareaBean>       lstTareas; // listado con todas las tareas del fichero
-    private HashMap<Integer, TareaBean> hmTareas; // hashMap con las tareas vigentes (tareas que se muestran en el comboBox)
+    private static MemoriaCompartida    instance;       // instancia unica de la clase
+    private ArrayList<DatosTareasBean>  lstDatosTareas; // hashMap con las tareas
+    private HashMap<Integer, TareaBean> hmTareas;       // hashMap con las tareas
     private boolean redimensionarVentana;
+    private DatosBBDD objBBDD;
 
 
 
@@ -23,10 +24,11 @@ public class MemoriaCompartida {
      * Constructor de la clase
      */
     public MemoriaCompartida(){
-		instance  = null;
-		lstTareas = new ArrayList<TareaBean>();
-		hmTareas  = new HashMap<Integer, TareaBean>();
+		instance       = null;
+		lstDatosTareas = new ArrayList<DatosTareasBean>();
+		hmTareas       = new HashMap<Integer, TareaBean>();
 		redimensionarVentana = false;
+		objBBDD        = new DatosBBDD();
     }
     
 
@@ -90,13 +92,6 @@ public class MemoriaCompartida {
 
 
     // --------------------- GETTER / SETTER ---------------------------------//
-    public ArrayList<TareaBean> getLstTareas() {
-        return lstTareas;
-    }
-    public void setLstTareas(ArrayList<TareaBean> lstTareas) {
-        this.lstTareas = lstTareas;
-    }
-
 
     public HashMap<Integer, TareaBean> getHmTareas() {
         return hmTareas;
@@ -106,11 +101,32 @@ public class MemoriaCompartida {
     }
 
 
-    public boolean isRedimensionarVentana() {
+    /**
+	 * @return the lstDatosTareas
+	 */
+	public final ArrayList<DatosTareasBean> getLstDatosTareas() {
+		return lstDatosTareas;
+	}
+	/**
+	 * @param lstDatosTareas the lstDatosTareas to set
+	 */
+	public final void setLstDatosTareas(ArrayList<DatosTareasBean> lstDatosTareas) {
+		this.lstDatosTareas = lstDatosTareas;
+	}
+
+
+	public boolean isRedimensionarVentana() {
         return redimensionarVentana;
     }
     public void setRedimensionarVentana(boolean redimensionarVentana) {
         this.redimensionarVentana = redimensionarVentana;
     }
-    
+
+
+	/**
+	 * @return the objBBDD
+	 */
+	public final DatosBBDD getObjBBDD() {
+		return objBBDD;
+	}
 }

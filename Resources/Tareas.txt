@@ -1,4 +1,6 @@
-- Hay que hacer el DAO
+--> comprobar porque no se están cargando bien las tareas en los listados
+
+
 - Crear la BBDD
 - Los botones principales
 - El log debe volcar a fichero

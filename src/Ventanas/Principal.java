@@ -213,9 +213,13 @@ public class Principal {
 		try{
 			objGT.cargarTareasBBDD();
 			
+			//Actualizamos el TBX
 			for(String tarea: objGT.obtenerTareasCbox()){
 				cbxTareas.addItem(tarea);
 			}
+			
+			//Actualizamos el listado de datos tareas
+			//TODO implementar actualizar listado datos tareas
 		}
 		catch (Exception e) {
 			String msgErr = "Principal::obtenerDatosTareas() " + e.getMessage();

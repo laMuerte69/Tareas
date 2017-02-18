@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,42 +72,65 @@ public class AccionMas {
     }
 
 
-    public ActionListener redimensionar() throws Exception {
-	ActionListener resultado = null;
-
-	try{
-	    resultado = new ActionListener() {
-
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            MemoriaCompartida memoria = MemoriaCompartida.getInstance();
-	            JButton botonMas = (JButton) e.getSource();
-
-	            if(botonMas.getActionCommand().equals("btnMas")){
-	            	if(memoria.isRedimensionarVentana()){
-        	        	memoria.setRedimensionarVentana(false);
-        	        	try {
-        	        		encogerVentana(botonMas);
-        	        	} catch (Exception e1) {
-        	        		log.log(Level.SEVERE, CLASE + "::redimensionar()[encogerVentana]: "  + e1.getMessage());
-        	        	}
-	            	}
-        	        else{
-        	        	memoria.setRedimensionarVentana(true);
-        	        	try {
-        	        		agrandarVentana(botonMas);
-        	        	} catch (Exception e1) {
-        	        		log.log(Level.SEVERE, CLASE + "::redimensionar()[agrandarVentana]: "  + e1.getMessage());
-        	        	}
-        	        }
-	            }
-	        }
-	    };
+    /**
+     * Metodo para cargar los datos en las tablas de listados
+     * @throws Exception 
+     */
+    private void cargarDatosTablas() throws Exception {
+		try{
+			for(Entry<Integer, TareaBean> objTarea : objGT.obtenerTareasListado().entrySet()){
+				//Actualizamos el listado de tareas para rehabilitar
+				if(objTarea.getValue().isBajaLogica()){
+					controlRehabilitar.anyadeFila(objTarea.getValue());
+				}
+				//Actualizamos el listado de tareas
+				else{
+					control.anhadeFila(objTarea.getValue());
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new Exception(CLASE + "::cargarDatosTablas(): " + e.getMessage());
+		}
 	}
-	catch (Exception e) {
-	    String msgErr = "AccionMas::redimensionar(): " + e.getMessage();
-	    throw new Exception(msgErr);
-	}
+
+
+	public ActionListener redimensionar() throws Exception {
+		ActionListener resultado = null;
+
+		try{
+			resultado = new ActionListener() {
+
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+		            MemoriaCompartida memoria = MemoriaCompartida.getInstance();
+		            JButton botonMas = (JButton) e.getSource();
+	
+		            if(botonMas.getActionCommand().equals("btnMas")){
+		            	if(memoria.isRedimensionarVentana()){
+	        	        	memoria.setRedimensionarVentana(false);
+	        	        	try {
+	        	        		encogerVentana(botonMas);
+	        	        	} catch (Exception e1) {
+	        	        		log.log(Level.SEVERE, CLASE + "::redimensionar()[encogerVentana]: "  + e1.getMessage());
+	        	        	}
+		            	}
+	        	        else{
+	        	        	memoria.setRedimensionarVentana(true);
+	        	        	try {
+	        	        		agrandarVentana(botonMas);
+	        	        	} catch (Exception e1) {
+	        	        		log.log(Level.SEVERE, CLASE + "::redimensionar()[agrandarVentana]: "  + e1.getMessage());
+	        	        	}
+	        	        }
+		            }
+		        }
+		    };
+		}
+		catch (Exception e) {
+		    String msgErr = "AccionMas::redimensionar(): " + e.getMessage();
+		    throw new Exception(msgErr);
+		}
 
 	return resultado;
     }
@@ -156,13 +180,14 @@ public class AccionMas {
 		    	
 		    	crearPanelSecundario(panelSecundario);
 		    	ventana.add(panelSecundario);
+		    	
+		    	cargarDatosTablas();
 		    }
 		    
-		    memoria.escribirTraza("Agrandamos la ventana");
+		    log.log(Level.INFO, "Agrandamos la ventana");
 		}
 		catch (Exception e) {
-		    String msgErr = "AccionMas::encogerVentana(): " + e.getMessage();
-		    throw new Exception(msgErr);
+		    throw new Exception(CLASE + "::encogerVentana(): " + e.getMessage());
 		}
 	    
     }
@@ -257,8 +282,6 @@ public class AccionMas {
 							log.log(Level.SEVERE, "Error al actualizar el combo de tareas: " + e1.getMessage());
 				         }
 			         }
-
-			         //TODO hay que mantener el listado de las tareas que es de donde vamos a saca los datos de este popUp
 			      }
 			});
 

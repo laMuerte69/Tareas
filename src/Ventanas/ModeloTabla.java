@@ -32,8 +32,6 @@ public class ModeloTabla implements TableModel{
     	numeroColumnas = COLUMNAS.length;
     	datos     = new LinkedList();
     	listeners = new LinkedList();
-    	
-    	anyadeTarea(new TareaBean(1, "Tarea Prueba", "Descripcion prueba")); //TODO Eliminar esta linea
     }
 
 
