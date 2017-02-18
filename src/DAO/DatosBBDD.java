@@ -74,6 +74,22 @@ public class DatosBBDD {
 		
 		try{
 			// TODO implementar
+			
+			// -----------------------------------------------------------
+			// TODO ELiminar estas lineas:
+			// -----------------------------------------------------------
+			DatosTareasBean t0 = new DatosTareasBean(0, 0, "10/01/2017 10:30", "10/01/2017 11:30");
+			DatosTareasBean t1 = new DatosTareasBean(1, 1, "11/01/2017 12:30", "11/01/2017 13:30");
+			DatosTareasBean t2 = new DatosTareasBean(2, 2, "12/01/2017 12:30", "12/01/2017 15:30");
+			DatosTareasBean t3 = new DatosTareasBean(3, 3, "13/01/2017 13:30", "13/01/2017 18:30");
+			resultado.add(t0);
+			resultado.add(t1);
+			resultado.add(t2);
+			resultado.add(t3);
+			resultado.add(new DatosTareasBean(4, 3, "13/01/2017 19:30", "13/01/2017 20:30"));
+			resultado.add(new DatosTareasBean(5, 3, "13/01/2017 20:31", "13/01/2017 20:59"));
+			resultado.add(new DatosTareasBean(6, 3, "13/01/2017 21:00", "13/01/2017 22:30"));
+			// -----------------------------------------------------------
 		}
 		catch (Exception e) {
 			throw new Exception(CLASE + "::cargarDatosTareas(): " + e.getMessage());

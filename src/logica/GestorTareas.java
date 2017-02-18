@@ -1,5 +1,7 @@
 package logica;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Vector;
@@ -174,6 +176,14 @@ public class GestorTareas {
 	 */
 	public void setDatosTarea(final DatosTareasBean datosTarea) {
 		memoria.addDatosTarea(datosTarea);
+	}
+	
+	/**
+	 * Metodo para obtener el listado con los datos de las tareas
+	 * @return
+	 */
+	public ArrayList<DatosTareasBean> obtenerLstDatosTareas(){
+		return memoria.getLstDatosTareas();
 	}
 
 

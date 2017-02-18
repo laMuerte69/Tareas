@@ -1,4 +1,4 @@
-package Ventanas;
+package ventanas;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,6 +18,7 @@ import beans.TareaBean;
 import comun.Constantes;
 import comun.Utilidades;
 import logica.GestorTareas;
+import tablas.ControlTabla;
 
 public class PanelAltaTareas extends JPanel {
 	

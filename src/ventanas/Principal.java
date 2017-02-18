@@ -1,4 +1,4 @@
-package Ventanas;
+package ventanas;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,17 +30,19 @@ public class Principal {
     private GestorTareas objGT;
     private JButton      btnPlay;
 	private JComboBox<String> cbxTareas;
+	private AccionMas objAccionMas;
+	private JFrame ventana;
+	private JPanel panelPrincipal;
 
     
     /**
      * Constructor por defecto
+     * @throws Exception 
      */
-    public Principal(){
-    	ancho     = 400;
-    	alto      = 200;
-    	objGT     = new GestorTareas();
-    	btnPlay   = null;
-    	cbxTareas = new JComboBox<String> ();
+    public Principal() throws Exception{
+    	ancho          = 400;
+    	alto           = 200;
+    	contructor();
     }
     
     
@@ -48,28 +50,36 @@ public class Principal {
      * Contructor con parametros basicos de la ventana
      * @param iAncho - ancho de la ventana
      * @param iAlto  - alto de la ventana
+     * @throws Exception 
      */
-    public Principal(int iAncho, int iAlto){
+    public Principal(int iAncho, int iAlto) throws Exception{
     	ancho     = iAncho;
     	alto      = iAlto;
-    	objGT     = new GestorTareas();
-    	btnPlay   = null;
-    	cbxTareas = new JComboBox<String> ();
+    	contructor();
     }
 
 
     /**
+     * Metodo comun a los contructores
+     * @throws Exception
+     */
+    private void contructor() throws Exception {
+    	objGT          = new GestorTareas();
+    	btnPlay        = null;
+    	cbxTareas      = new JComboBox<String> ();
+		ventana        = new JFrame("Tareas");
+		panelPrincipal = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    	objAccionMas   = new AccionMas(ventana, panelPrincipal, objGT);		
+	}
+
+
+	/**
      * Metodo para crear la ventana de la aplicacion
      * @throws Exception 
      */
     public void crear() throws Exception{
 
-	JFrame ventana = null;
-	JPanel panelPrincipal = null;
-
 		try{
-			ventana = new JFrame("Tareas");
-			panelPrincipal = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			
 			obtenerDatosTareas();
 			
@@ -151,7 +161,7 @@ public class Principal {
 				btnPlay.setEnabled(true);    			
 			}
 
-			btnPlay.addActionListener(new AccionBotonPlay(panelSuperior, objGT).tiempoTarea());
+			btnPlay.addActionListener(new AccionBotonPlay(panelSuperior, objGT, objAccionMas).tiempoTarea());
 			btnPlay.setActionCommand("btnPlay");
 			panelSuperior.add(btnPlay);
 		}
@@ -210,9 +220,10 @@ public class Principal {
 		JButton btnMas = null;
 	
 		try{
+		    objAccionMas = new AccionMas(ventana, panelSuperior, objGT);
 		    btnMas = new JButton(Constantes.BTN_MAS_MAS);
 		    btnMas.setName("btnMas");
-		    btnMas.addActionListener(new AccionMas(ventana, panelSuperior, objGT).redimensionar());
+		    btnMas.addActionListener(objAccionMas.redimensionar());
 		    btnMas.setActionCommand("btnMas");
 		    panelSuperior.add(btnMas);
 		}
@@ -234,9 +245,6 @@ public class Principal {
 			for(String tarea: objGT.obtenerTareasCbox()){
 				cbxTareas.addItem(tarea);
 			}
-			
-			//Actualizamos el listado de datos tareas
-			//TODO implementar actualizar listado datos tareas
 		}
 		catch (Exception e) {
 			throw new Exception(CLASE + "::obtenerDatosTareas() " + e.getMessage());

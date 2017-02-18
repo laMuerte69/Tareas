@@ -7,10 +7,10 @@ public class Tareas {
      */
     public static void main(String[] args) {
 
-    	Ventanas.Principal ventana = null;
+    	ventanas.Principal ventana = null;
 		
 		try {
-			ventana = new Ventanas.Principal(500, 100);
+			ventana = new ventanas.Principal(500, 100);
 		    ventana.crear();
 	
 		} catch (Exception e) {

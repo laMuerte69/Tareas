@@ -1,26 +1,34 @@
-package Ventanas;
+package tablas;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import beans.TareaBean;
 
-public class ControlTablaRehabilitar {
-	private final static String CLASE = ControlTablaRehabilitar.class.getName();
+public class ControlTabla {
+	private final static String CLASE = ControlTabla.class.getName();
 	protected static Logger log = Logger.getLogger(CLASE);
 
     // El modelo de la tabla
-    private TablaModeloRehabiliar modelo = null;
+    private ModeloTabla modelo = null;
     
     
     /**
      * Constructor. Se le pasa el modelo, al que añade varios elementos y
      * se lo guarda.
      */
-    public ControlTablaRehabilitar(TablaModeloRehabiliar modelo){
+    public ControlTabla(ModeloTabla modelo)
+    {
         this.modelo = modelo;
     }
-
+    
+    /**
+     * Añade una fila en el modelo, al final del mismo
+     * @param cargaInicio - para saber si el oriden de datos es de la bbdd (true) o desde la aplicacion (false)
+     */
+    public void anhadeFila (TareaBean tarea, boolean cargaInicio){
+        modelo.anyadeTarea(tarea, cargaInicio);
+    }
     
     /** Elimina la primera fila del modelo */
     public void borraFila () {
@@ -52,15 +60,10 @@ public class ControlTablaRehabilitar {
 
 
 	/**
-	 * Metodo para añadir una nueva fila a la tabla de rehabilitar
-	 * @param tarea - referencia al objeto con los datos de la tarea
+	 * Metodo para rehabilitar una tarea que estaba de baja
+	 * @param tarea
 	 */
-	public void anyadeFila(final TareaBean tarea) {
-		try{
-			modelo.anyadeTarea(tarea);
-		}
-		catch (Exception e) {
-			log.log(Level.SEVERE, CLASE + "::anyadeFila(" + tarea.getId() + "): "  + e.getMessage());
-		}
+	public void reHabilitarFila(TareaBean tarea) {
+		modelo.rehabiliarTarea(tarea);
 	}
 }

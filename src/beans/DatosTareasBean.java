@@ -16,7 +16,14 @@ public class DatosTareasBean {
     	fechaFin    = Constantes.VACIO;
     }
 
-    
+
+    public DatosTareasBean(int iId, int iIdTarea, String strFechaInicio, String strFechaFin){
+    	id          = iId;
+    	idTarea     = iIdTarea;
+    	fechaInicio = strFechaInicio;
+    	fechaFin    = strFechaFin;
+    }
+
     
 	/**
 	 * @return the id

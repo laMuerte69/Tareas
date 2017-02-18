@@ -13,24 +13,25 @@ import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 
-import Ventanas.ControlTabla;
-import Ventanas.ControlTablaRehabilitar;
-import Ventanas.ModeloTabla;
-import Ventanas.PanelAltaTareas;
-import Ventanas.PanelGestionTarea;
-import Ventanas.TablaModeloRehabiliar;
 import beans.TareaBean;
 import comun.Constantes;
 import comun.MemoriaCompartida;
 import comun.Utilidades;
 import logica.GestorTareas;
+import tablas.ControlLstDatoTareas;
+import tablas.ControlTabla;
+import tablas.ControlTablaRehabilitar;
+import tablas.ModeloTabla;
+import tablas.TablaModeloLstDatoTareas;
+import tablas.TablaModeloRehabiliar;
+import ventanas.PanelAltaTareas;
+import ventanas.PanelGestionTarea;
 
 public class AccionMas {
 
@@ -46,12 +47,16 @@ public class AccionMas {
     private boolean      primeraVez;
     private ModeloTabla  modelo;
     private ControlTabla control;
-    private TablaModeloRehabiliar   tablaModeloRehabilitar;
+    private TablaModeloRehabiliar    tablaModeloRehabilitar;
+    private TablaModeloLstDatoTareas modeloLstDatoTareas;
     private ControlTablaRehabilitar controlRehabilitar;
+    private ControlLstDatoTareas    controlLstDatoTareas;
     private JTable       tabla;
     private JTable       tablaRehabilitar;
+    private JTable       tablaLstDatoTareas;
     private JScrollPane  scrollListadoTareas;
     private JScrollPane  scrollLstRehabilitarTareas;
+    private JScrollPane  scrollListadoDatosTareas;
 
 
     public AccionMas(JFrame objVentana, JPanel panelSuperior, GestorTareas gt) throws Exception{
@@ -66,30 +71,16 @@ public class AccionMas {
 		control             = new ControlTabla(modelo);
 		scrollListadoTareas = new JScrollPane();
 		scrollLstRehabilitarTareas = new JScrollPane();
+		scrollListadoDatosTareas   = new JScrollPane();
 		panelPrincipal      = panelSuperior;
 
 		tablaModeloRehabilitar = new TablaModeloRehabiliar(objGT);
 		controlRehabilitar     = new ControlTablaRehabilitar(tablaModeloRehabilitar);
+		
+		modeloLstDatoTareas    = new TablaModeloLstDatoTareas(objGT);
+		controlLstDatoTareas   = new ControlLstDatoTareas(modeloLstDatoTareas);
+		      
     }
-
-
-    /**
-     * Metodo para cargar los datos en las tablas de listados
-     * @throws Exception 
-     */
-    private void cargarDatosTablas() throws Exception {
-		try{
-			for(Entry<Integer, TareaBean> objTarea : objGT.obtenerTareasListado().entrySet()){
-				//Actualizamos el listado de tareas
-				if(!objTarea.getValue().isBajaLogica()){
-					control.anhadeFila(objTarea.getValue(), true);
-				}
-			}
-		}
-		catch (Exception e) {
-			throw new Exception(CLASE + "::cargarDatosTablas(): " + e.getMessage());
-		}
-	}
 
 
 	public ActionListener redimensionar() throws Exception {
@@ -188,6 +179,26 @@ public class AccionMas {
 
 
     /**
+     * Metodo para cargar los datos en las tablas de listados
+     * @throws Exception 
+     */
+    private void cargarDatosTablas() throws Exception {
+		try{
+			//Tareas
+			for(Entry<Integer, TareaBean> objTarea : objGT.obtenerTareasListado().entrySet()){
+				//Actualizamos el listado de tareas
+				if(!objTarea.getValue().isBajaLogica()){
+					control.anhadeFila(objTarea.getValue(), true);
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new Exception(CLASE + "::cargarDatosTablas(): " + e.getMessage());
+		}
+	}
+
+
+    /**
      * Metodo para crear el panel secundario (debajo del panel principal
      * @param panel - referencial al panel secundario
      * @throws Exception
@@ -231,64 +242,6 @@ public class AccionMas {
 		}
 		catch (Exception e) {
 			throw new Exception(CLASE + "::tabListadoTareas(): " + e.getMessage());
-		}
-	}
-
-
-	/**
-	 * Metodo para crear el panel que gestiona las tareas
-	 * @param tabAltaTareas - panel donde se insertara la tabla de las tareas
-	 * @throws Exception
-	 */
-	private void panelListadoTareas(JPanel tabAltaTareas) throws Exception {
-		try{
-			// Se crea el JScrollPane, el JTable y se pone la cabecera...
-			tabla = new JTable(modelo);
-			tabla.setName("tabListadoTareas");
-
-			tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
-			tabla.getColumnModel().getColumn(1).setPreferredWidth(150);
-			tabla.getColumnModel().getColumn(2).setPreferredWidth(245);
-			
-			tabla.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) 
-			      {
-			         int fila    = tabla.rowAtPoint(e.getPoint());
-			         int columna = 0;
-//			         int columna = tabla.columnAtPoint(e.getPoint());
-			         
-			         if ((fila > -1) && e.getClickCount() == 2){
-			        	int id = (Integer) modelo.getValueAt(fila,columna);
-
-			        	TareaBean tarea = objGT.obtenerTarea(id);
-						new PanelGestionTarea(tarea);
-
-						if(tarea.isBajaLogica()){
-							//Eliminamos la tarea de la tabla listado
-							control.borraFila(id);
-							//Añadimos la tarea a la tabla de rehabilitar
-							controlRehabilitar.anyadeFila(tarea);
-						}
-			         
-				         try {
-							Utilidades.actualizarCBXTareas(panelPrincipal, objGT);
-				         } catch (Exception e1) {
-				        	 String msgErr = "Error al actualizar el combo de tareas: " + e1.getMessage();
-				        	 JOptionPane.showMessageDialog(panelSecundario, msgErr, "Error panelListadoTareas() !!", JOptionPane.ERROR_MESSAGE);
-				        	 log.log(Level.SEVERE, msgErr);
-				         }
-			         }
-			      }
-			});
-
-			scrollListadoTareas.setViewportView(tabla);
-			scrollListadoTareas.setColumnHeaderView (tabla.getTableHeader());
-			scrollListadoTareas.setPreferredSize(new Dimension(Constantes.ANCHO_TABLA_TAREAS, Constantes.ALTO_TABLA_TAREAS));
-
-			tabAltaTareas.add(scrollListadoTareas);	        
-		}
-		catch (Exception e) {
-			throw new Exception(CLASE + "::panelListadoTareas(): " + e.getMessage());
 		}
 	}
 
@@ -375,6 +328,7 @@ public class AccionMas {
 		}
 	}
 	
+
 	/**
 	 * Metodo para crear el tab donde se listaran los datos de las tareas
 	 * @param tabPrincipal - referencia al JTab donde ira insertado este tab 
@@ -387,14 +341,109 @@ public class AccionMas {
 			tabListadoDatosTareas = new JPanel();
 			tabListadoDatosTareas.setName("tabListadoDatosTareas");
 			tabListadoDatosTareas.setPreferredSize(new Dimension(Constantes.LARGO_TAB_PANEL_SEC, Constantes.ALTO_TAB_PANEL_SEC));
-			//TODO FJ: implementar contenido
-			JLabel et_p3=new JLabel("Estas en el panel \"Datos tareas\" ");
-			tabListadoDatosTareas.add(et_p3);
+			
+			panelListadoDatosTareas(tabListadoDatosTareas);
+
 			tabPrincipal.addTab("Datos tareas", tabListadoDatosTareas);
+			
 		}
 		catch (Exception e) {
 			throw new Exception(CLASE + "::tabListadoDatosTareas(): " + e.getMessage());
 		}
 	}
 
+
+	/**
+	 * Metodo para crear el panel que gestiona las tareas
+	 * @param tabAltaTareas - panel donde se insertara la tabla de las tareas
+	 * @throws Exception
+	 */
+	private void panelListadoTareas(JPanel tabAltaTareas) throws Exception {
+		try{
+			// Se crea el JScrollPane, el JTable y se pone la cabecera...
+			tabla = new JTable(modelo);
+			tabla.setName("tablaListadoTareas");
+
+			tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
+			tabla.getColumnModel().getColumn(1).setPreferredWidth(150);
+			tabla.getColumnModel().getColumn(2).setPreferredWidth(245);
+			
+			tabla.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) 
+			      {
+			         int fila    = tabla.rowAtPoint(e.getPoint());
+			         int columna = 0;
+//			         int columna = tabla.columnAtPoint(e.getPoint());
+			         
+			         if ((fila > -1) && e.getClickCount() == 2){
+			        	int id = (Integer) modelo.getValueAt(fila,columna);
+
+			        	TareaBean tarea = objGT.obtenerTarea(id);
+						new PanelGestionTarea(tarea);
+
+						if(tarea.isBajaLogica()){
+							//Eliminamos la tarea de la tabla listado
+							control.borraFila(id);
+							//Añadimos la tarea a la tabla de rehabilitar
+							controlRehabilitar.anyadeFila(tarea);
+						}
+			         
+				         try {
+							Utilidades.actualizarCBXTareas(panelPrincipal, objGT);
+				         } catch (Exception e1) {
+				        	 String msgErr = "Error al actualizar el combo de tareas: " + e1.getMessage();
+				        	 JOptionPane.showMessageDialog(panelSecundario, msgErr, "Error panelListadoTareas() !!", JOptionPane.ERROR_MESSAGE);
+				        	 log.log(Level.SEVERE, msgErr);
+				         }
+			         }
+			      }
+			});
+
+			scrollListadoTareas.setViewportView(tabla);
+			scrollListadoTareas.setColumnHeaderView (tabla.getTableHeader());
+			scrollListadoTareas.setPreferredSize(new Dimension(Constantes.ANCHO_TABLA_TAREAS, Constantes.ALTO_TABLA_TAREAS));
+
+			tabAltaTareas.add(scrollListadoTareas);	        
+		}
+		catch (Exception e) {
+			throw new Exception(CLASE + "::panelListadoTareas(): " + e.getMessage());
+		}
+	}
+
+
+	/**
+	 * Metodo para crear el panel que muestra los datos de las tareas
+	 * @param tabListadoDatosTareas - panel donde se insertara la tabla de los datos de las tareas
+	 * @throws Exception
+	 */
+	private void panelListadoDatosTareas(JPanel tabListadoDatosTareas) throws Exception {
+		try{
+			// Se crea el JScrollPane, el JTable y se pone la cabecera...
+			tablaLstDatoTareas = new JTable(modeloLstDatoTareas);
+			tablaLstDatoTareas.setName("tablaListadoDatosTareas");
+
+			tablaLstDatoTareas.getColumnModel().getColumn(0).setPreferredWidth(40);
+			tablaLstDatoTareas.getColumnModel().getColumn(1).setPreferredWidth(200);
+			tablaLstDatoTareas.getColumnModel().getColumn(2).setPreferredWidth(105);
+			tablaLstDatoTareas.getColumnModel().getColumn(3).setPreferredWidth(105);
+
+			scrollListadoDatosTareas.setViewportView(tablaLstDatoTareas);
+			scrollListadoDatosTareas.setColumnHeaderView (tablaLstDatoTareas.getTableHeader());
+			scrollListadoDatosTareas.setPreferredSize(new Dimension(Constantes.ANCHO_TABLA_TAREAS, Constantes.ALTO_TABLA_TAREAS));
+
+			tabListadoDatosTareas.add(scrollListadoDatosTareas);	        
+		}
+		catch (Exception e) {
+			throw new Exception(CLASE + "::panelListadoDatosTareas(): " + e.getMessage());
+		}
+	}
+
+
+	/**
+	 * @return the controlLstDatoTareas
+	 */
+	public final ControlLstDatoTareas getControlLstDatoTareas() {
+		return controlLstDatoTareas;
+	}
+	
 }

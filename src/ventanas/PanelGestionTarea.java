@@ -1,4 +1,4 @@
-package Ventanas;
+package ventanas;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;

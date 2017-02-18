@@ -1,4 +1,4 @@
-package Ventanas;
+package tablas;
 
 import java.util.LinkedList;
 import java.util.Map.Entry;
