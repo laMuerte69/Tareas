@@ -1,0 +1,9 @@
+- Hay que hacer el DAO
+- Crear la BBDD
+- Los botones principales
+- El log debe volcar a fichero
+- Repasar los TODO
+- en la pestaña "Alta tareas", alargar la descripcion
+- Gestionar las tareas con los tiempos
+- Exportar a Excel
+- Importar a Excel
