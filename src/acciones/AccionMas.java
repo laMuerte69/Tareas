@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 
+import beans.DatosTareasBean;
 import beans.TareaBean;
 import comun.Constantes;
 import comun.MemoriaCompartida;
@@ -83,6 +84,11 @@ public class AccionMas {
     }
 
 
+    /**
+     * Metodo para redimensionar el panel secundario
+     * @return
+     * @throws Exception
+     */
 	public ActionListener redimensionar() throws Exception {
 		ActionListener resultado = null;
 
@@ -190,6 +196,12 @@ public class AccionMas {
 				if(!objTarea.getValue().isBajaLogica()){
 					control.anhadeFila(objTarea.getValue(), true);
 				}
+			}
+			
+			//Datos tareas
+			controlLstDatoTareas.borraTabla();
+			for(DatosTareasBean dTarea: objGT.obtenerLstDatosTareas()){
+				controlLstDatoTareas.anyadeFila(dTarea);
 			}
 		}
 		catch (Exception e) {

@@ -30,7 +30,6 @@ public class Principal {
     private GestorTareas objGT;
     private JButton      btnPlay;
 	private JComboBox<String> cbxTareas;
-	private AccionMas objAccionMas;
 	private JFrame ventana;
 	private JPanel panelPrincipal;
 
@@ -69,7 +68,6 @@ public class Principal {
     	cbxTareas      = new JComboBox<String> ();
 		ventana        = new JFrame("Tareas");
 		panelPrincipal = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    	objAccionMas   = new AccionMas(ventana, panelPrincipal, objGT);		
 	}
 
 
@@ -161,7 +159,7 @@ public class Principal {
 				btnPlay.setEnabled(true);    			
 			}
 
-			btnPlay.addActionListener(new AccionBotonPlay(panelSuperior, objGT, objAccionMas).tiempoTarea());
+			btnPlay.addActionListener(new AccionBotonPlay(panelSuperior, objGT).tiempoTarea());
 			btnPlay.setActionCommand("btnPlay");
 			panelSuperior.add(btnPlay);
 		}
@@ -218,7 +216,8 @@ public class Principal {
      */
     private void crearBotonMas(JFrame ventana, JPanel panelSuperior) throws Exception {
 		JButton btnMas = null;
-	
+		AccionMas objAccionMas = null;
+
 		try{
 		    objAccionMas = new AccionMas(ventana, panelSuperior, objGT);
 		    btnMas = new JButton(Constantes.BTN_MAS_MAS);

@@ -106,7 +106,15 @@ public class TablaModeloLstDatoTareas implements TableModel{
 		}
     }
 
-    
+
+    /**
+     * Metodo para borrar los datos de la tabla
+     */
+	public void borraTabla() {
+		datos.clear();
+	}
+
+
     /** Adds a listener to the list that is notified each time a change
      * to the data model occurs.
      *

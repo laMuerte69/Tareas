@@ -17,11 +17,24 @@ public class ControlLstDatoTareas {
 	}
 
     
-    /** Elimina la primera fila del modelo */
+    /**  
+     *  Elimina la primera fila del modelo
+     */
     public void borraFila () {
         if (modelo.getRowCount() > 0)
            modelo.borraTarea(0);
     }
+
+
+    /**
+     * Metodo para borrar toda la tabla de datos de tareas
+     */
+    public void borraTabla () {
+        if (modelo.getRowCount() > 0){
+        	modelo.borraTabla();
+        }
+    }
+
 
     /**
      * Metodo para borrar la tarea cuyo identificador el ID de la tabla

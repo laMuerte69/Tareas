@@ -23,14 +23,12 @@ public class AccionBotonPlay {
     private GestorTareas objGT;
     private JPanel       panelPrincipal;
     private DatosTareasBean dTarea;
-    private AccionMas objAccionMas;
 
 	
-	public AccionBotonPlay(JPanel panelSuperior, GestorTareas gt, AccionMas accionMas) throws Exception{
+	public AccionBotonPlay(JPanel panelSuperior, GestorTareas gt) throws Exception{
 		objGT          = gt;
 		panelPrincipal = panelSuperior;
 		dTarea         = null;
-		objAccionMas   = accionMas;
 	}
 	
 	
@@ -109,7 +107,7 @@ public class AccionBotonPlay {
 						//Paramos el tiempo
 						dTarea.setFechaFin(Utilidades.obtenerFecha());
 						objGT.setDatosTarea(dTarea);
-						objAccionMas.getControlLstDatoTareas().anyadeFila(dTarea);
+						//TODO añadir datos tarea  a la lst
 						dTarea = null;
 					}
 					catch (Exception e) {
