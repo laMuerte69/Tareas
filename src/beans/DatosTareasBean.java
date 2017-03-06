@@ -1,6 +1,7 @@
 package beans;
 
 import comun.Constantes;
+import comun.Utilidades;
 
 public class DatosTareasBean {
 
@@ -65,6 +66,18 @@ public class DatosTareasBean {
 	public final void setFechaInicio(String fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
+	public final int getFInicio() throws Exception {
+		int resultado = 0;
+		
+		try{
+			resultado  = Utilidades.obtenerFecha(fechaInicio);
+		}
+		catch (Exception e) {
+			throw new Exception("Error al convertir la fecha de inicio");
+		}
+
+		return resultado;
+	}
 
 	
 	/**
@@ -79,6 +92,17 @@ public class DatosTareasBean {
 	public final void setFechaFin(String fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-    
+	public int getFFin() throws Exception {
+		int resultado = 0;
+		
+		try{
+			resultado  = Utilidades.obtenerFecha(fechaFin);
+		}
+		catch (Exception e) {
+			throw new Exception("Error al convertir la fecha de fin");
+		}
+
+		return resultado;
+	}
     
 }

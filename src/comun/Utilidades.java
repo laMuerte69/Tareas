@@ -34,6 +34,21 @@ public class Utilidades {
 		
 		return resultado;
 	}
+
+	public static int obtenerFecha(String fechaInicio) throws Exception {
+		int resultado = 0;
+
+		try{
+			String f   = fechaInicio.substring(0, fechaInicio.indexOf(" "));
+			String []v = f.split("/");
+			resultado = fechaNumerica(Integer.parseInt(v[2]), Integer.parseInt(v[1]), Integer.parseInt(v[0]));
+		}
+		catch (Exception e) {
+			throw new Exception(CLASE + "::obtenerFecha("+fechaInicio+"): " + e.getMessage());
+		}
+		
+		return resultado;
+	}
 	
 	/**
 	 * Metodo para obtener la hora actual
@@ -96,5 +111,16 @@ public class Utilidades {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Metood para obtener el valor de la fecha en formato numerico
+	 * @param year  - año
+	 * @param month - mes
+	 * @param day   - dia
+	 * @return
+	 */
+	public static int fechaNumerica(int year, int month, int day) {
+		return year * 10000 + month * 100 + day;
 	}
 }

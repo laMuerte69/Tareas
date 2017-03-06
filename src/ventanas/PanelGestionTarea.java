@@ -41,6 +41,7 @@ public class PanelGestionTarea extends JDialog {
 	 * Create the panel.
 	 */
 	public PanelGestionTarea(TareaBean objTarea) {
+		setTitle("Gestion tarea");
 		setResizable(false);
 		setAlwaysOnTop(true);
 

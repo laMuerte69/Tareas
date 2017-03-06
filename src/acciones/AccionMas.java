@@ -58,6 +58,7 @@ public class AccionMas {
     private JScrollPane  scrollListadoTareas;
     private JScrollPane  scrollLstRehabilitarTareas;
     private JScrollPane  scrollListadoDatosTareas;
+    private AccionBotonFiltroLstDatosTareas listenerBtn;
 
 
     public AccionMas(JFrame objVentana, JPanel panelSuperior, GestorTareas gt) throws Exception{
@@ -78,9 +79,9 @@ public class AccionMas {
 		tablaModeloRehabilitar = new TablaModeloRehabiliar(objGT);
 		controlRehabilitar     = new ControlTablaRehabilitar(tablaModeloRehabilitar);
 		
-		modeloLstDatoTareas    = new TablaModeloLstDatoTareas(objGT);
-		controlLstDatoTareas   = new ControlLstDatoTareas(modeloLstDatoTareas);
-		      
+		modeloLstDatoTareas  = new TablaModeloLstDatoTareas(objGT);
+		controlLstDatoTareas = new ControlLstDatoTareas(modeloLstDatoTareas);
+		listenerBtn          = null;
     }
 
 
@@ -429,6 +430,7 @@ public class AccionMas {
 	 * @throws Exception
 	 */
 	private void panelListadoDatosTareas(JPanel tabListadoDatosTareas) throws Exception {
+
 		try{
 			// Se crea el JScrollPane, el JTable y se pone la cabecera...
 			tablaLstDatoTareas = new JTable(modeloLstDatoTareas);
@@ -441,9 +443,16 @@ public class AccionMas {
 
 			scrollListadoDatosTareas.setViewportView(tablaLstDatoTareas);
 			scrollListadoDatosTareas.setColumnHeaderView (tablaLstDatoTareas.getTableHeader());
-			scrollListadoDatosTareas.setPreferredSize(new Dimension(Constantes.ANCHO_TABLA_TAREAS, Constantes.ALTO_TABLA_TAREAS));
+			scrollListadoDatosTareas.setPreferredSize(new Dimension(Constantes.ANCHO_TABLA_TAREAS, Constantes.ALTO_TABLA_TAREAS - 40));
 
-			tabListadoDatosTareas.add(scrollListadoDatosTareas);	        
+			tabListadoDatosTareas.add(scrollListadoDatosTareas);
+			
+			JButton btnFiltro = new JButton("Filto");
+			listenerBtn = new AccionBotonFiltroLstDatosTareas(tabListadoDatosTareas, objGT.obtenerLstDatosTareas(), controlLstDatoTareas);
+			btnFiltro.setName("btnFiltroLstDatosTareas");
+			btnFiltro.addMouseListener(listenerBtn.filtroTareas());
+			btnFiltro.setActionCommand("btnFiltroLstDatosTareas");
+			tabListadoDatosTareas.add(btnFiltro);
 		}
 		catch (Exception e) {
 			throw new Exception(CLASE + "::panelListadoDatosTareas(): " + e.getMessage());

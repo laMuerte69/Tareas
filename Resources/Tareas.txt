@@ -1,4 +1,8 @@
+//TODO voy por aqui (buscar este TODO). Se ha implementado el filtro de la tareaas y solo queda probarlo
+
 => Ver xq el play/pause no actualiza la lista de datos
+
+- Ventana de filtro de los datos de las tareas
 
 - Crear la BBDD
 - El log debe volcar a fichero
