@@ -447,7 +447,7 @@ public class AccionMas {
 
 			tabListadoDatosTareas.add(scrollListadoDatosTareas);
 			
-			JButton btnFiltro = new JButton("Filto");
+			JButton btnFiltro = new JButton("Filtro");
 			listenerBtn = new AccionBotonFiltroLstDatosTareas(tabListadoDatosTareas, objGT.obtenerLstDatosTareas(), controlLstDatoTareas);
 			btnFiltro.setName("btnFiltroLstDatosTareas");
 			btnFiltro.addMouseListener(listenerBtn.filtroTareas());

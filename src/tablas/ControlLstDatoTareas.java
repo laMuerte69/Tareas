@@ -71,4 +71,19 @@ public class ControlLstDatoTareas {
 			log.log(Level.SEVERE, CLASE + "::anyadeFila(" + tarea.getId() + "): "  + e.getMessage());
 		}
 	}
+
+
+	/**
+	 * Metodo para refrescar la tabla cuando esta vacia
+	 */
+	public void refresh() {
+		try{
+			if(modelo.getRowCount() == 0){
+				modelo.refresh();
+			}
+		}
+		catch (Exception e) {
+			log.log(Level.SEVERE, CLASE + "::refresh(): "  + e.getMessage());
+		}
+	}
 }

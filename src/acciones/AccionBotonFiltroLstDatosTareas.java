@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import beans.DatosTareasBean;
 import beans.FiltroDatosTareaBean;
+import comun.TipoFiltro;
 import tablas.ControlLstDatoTareas;
 import ventanas.PanelFiltroDatosTarea;
 
@@ -64,19 +65,48 @@ public class AccionBotonFiltroLstDatosTareas {
 						int fFin    = 0;
 						
 						new PanelFiltroDatosTarea(filtro);
-						if(filtro.hayFiltros()){
+
+						if(filtro.getTipoFiltro() != TipoFiltro.NADA){
 							fInicio = filtro.gefFechaInicio();
 							fFin    = filtro.gefFechaFin();
 	
 							control.borraTabla();
-							for(DatosTareasBean dTarea: lstDatosTareas){
-								
-								if(fInicio <= dTarea.getFInicio() && fFin >= dTarea.getFFin()){
+							//no hay filtro
+							if(0 == fInicio && 0 == fFin){
+								for(DatosTareasBean dTarea: lstDatosTareas){
 									control.anyadeFila(dTarea);
 								}
-								//TODO voy por aqui
 							}
+							//los dos filtros esta activos
+							else if(0 != fInicio && 0 != fFin){
+								for(DatosTareasBean dTarea: lstDatosTareas){
+									if(fInicio <= dTarea.getFInicio() && fFin >= dTarea.getFFin()){
+										control.anyadeFila(dTarea);
+									}
+								}
+							}
+							//solo hay un filtro activo
+							else{
+								if(0 != fInicio){
+									for(DatosTareasBean dTarea: lstDatosTareas){
+										if(fInicio <= dTarea.getFInicio()){
+											control.anyadeFila(dTarea);
+										}
+									}
+								}
+								else{
+									for(DatosTareasBean dTarea: lstDatosTareas){
+										if(fFin >= dTarea.getFFin()){
+											control.anyadeFila(dTarea);
+										}
+									}
+								}
+							}
+							
+							control.refresh();
+							//TODO refrescar tabla
 						}
+
 					} catch (Exception e1) {
 			    		String msgErr = CLASE + "filtroTareas::mouseClicked(): "  + e1.getMessage();
 			    		JOptionPane.showMessageDialog(panelPadre, msgErr, "Error mouseClicked() !!", JOptionPane.ERROR_MESSAGE);

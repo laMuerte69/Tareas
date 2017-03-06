@@ -11,7 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 
 import beans.FiltroDatosTareaBean;
 import comun.Constantes;
+import comun.TipoFiltro;
 
 public class PanelFiltroDatosTarea extends JDialog {
 
@@ -150,7 +151,7 @@ public class PanelFiltroDatosTarea extends JDialog {
 		gbc_txtDd.gridx = 1;
 		gbc_txtDd.gridy = 1;
 		getContentPane().add(txtDiaFini, gbc_txtDd);
-		txtDiaFini.setColumns(2);
+		txtDiaFini.setColumns(3);
 		
 		JLabel label = new JLabel("/");
 		GridBagConstraints gbc_label = new GridBagConstraints();
@@ -169,7 +170,7 @@ public class PanelFiltroDatosTarea extends JDialog {
 		gbc_txtMm.gridx = 3;
 		gbc_txtMm.gridy = 1;
 		getContentPane().add(txtMesFini, gbc_txtMm);
-		txtMesFini.setColumns(2);
+		txtMesFini.setColumns(3);
 		
 		JLabel label_1 = new JLabel("/");
 		GridBagConstraints gbc_label_1 = new GridBagConstraints();
@@ -199,7 +200,7 @@ public class PanelFiltroDatosTarea extends JDialog {
 		gbc_txtDd_1.gridx = 8;
 		gbc_txtDd_1.gridy = 1;
 		getContentPane().add(txtDiaFfin, gbc_txtDd_1);
-		txtDiaFfin.setColumns(2);
+		txtDiaFfin.setColumns(3);
 		
 		label_2 = new JLabel("/");
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
@@ -218,7 +219,7 @@ public class PanelFiltroDatosTarea extends JDialog {
 		gbc_txtMm_1.gridx = 10;
 		gbc_txtMm_1.gridy = 1;
 		getContentPane().add(txtMesFfin, gbc_txtMm_1);
-		txtMesFfin.setColumns(2);
+		txtMesFfin.setColumns(3);
 		
 		label_3 = new JLabel("/");
 		GridBagConstraints gbc_label_3 = new GridBagConstraints();
@@ -239,10 +240,11 @@ public class PanelFiltroDatosTarea extends JDialog {
 		getContentPane().add(txtAnyoFfin, gbc_txtYyyy_1);
 		txtAnyoFfin.setColumns(4);
 		
-		lblEspacio = new JLabel("Espacio");
+		lblEspacio = new JLabel(" ");
 		GridBagConstraints gbc_lblEspacio = new GridBagConstraints();
+		gbc_lblEspacio.gridwidth = 5;
 		gbc_lblEspacio.insets = new Insets(0, 0, 5, 5);
-		gbc_lblEspacio.gridx = 5;
+		gbc_lblEspacio.gridx = 3;
 		gbc_lblEspacio.gridy = 2;
 		getContentPane().add(lblEspacio, gbc_lblEspacio);
 		
@@ -252,7 +254,6 @@ public class PanelFiltroDatosTarea extends JDialog {
 			public void mousePressed(MouseEvent arg0) {
 				String msgErr = Constantes.VACIO;
 				boolean error = false;
-				Date fecha = new Date();
 				int dd = 0;
 				int mm = 0;
 				int yy = 0;
@@ -299,8 +300,10 @@ public class PanelFiltroDatosTarea extends JDialog {
 					try {
 						if(!error){
 							validadFecha(dd, mm, yy);
-							fecha = new SimpleDateFormat("dd/mm/YYYY").parse(dd + "/" + mm + "/" + yy);
-							filtro.setFechaInicio(fecha);
+							Calendar cal =  Calendar.getInstance();
+							cal.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(dd + "/" + mm + "/" + yy));
+							filtro.setTipoFiltro(TipoFiltro.F_INICIO);
+							filtro.setFechaInicio(cal);
 						}
 						else{
 							JOptionPane.showMessageDialog( null, msgErr, "Error fecha inicio", JOptionPane.ERROR_MESSAGE);
@@ -357,8 +360,15 @@ public class PanelFiltroDatosTarea extends JDialog {
 					try {
 						if(!error){
 							validadFecha(dd, mm, yy);
-							fecha = new SimpleDateFormat("dd/mm/YYYY").parse(dd + "/" + mm + "/" + yy);
-							filtro.setFechaFin(fecha);
+							Calendar cal =  Calendar.getInstance();
+							cal.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(dd + "/" + mm + "/" + yy));
+							filtro.setFechaFin(cal);
+							if(filtro.getTipoFiltro() == TipoFiltro.NADA){
+								filtro.setTipoFiltro(TipoFiltro.F_FIN);
+							}
+							else{
+								filtro.setTipoFiltro(TipoFiltro.TODO);
+							}
 						}
 						else{
 							JOptionPane.showMessageDialog( null, msgErr, "Error fecha fin", JOptionPane.ERROR_MESSAGE);
@@ -376,6 +386,12 @@ public class PanelFiltroDatosTarea extends JDialog {
 
 				if(!error){
 					log.info("Aceptar [filtro]: " + filtro.getInfo());
+					
+					//Si solo hemos pulsado "Aceptar" sin marcar nada, que coja todos los datos sin aplicar ningun tipo de filtro
+					if(filtro.getTipoFiltro() == TipoFiltro.NADA){
+						filtro.setTipoFiltro(TipoFiltro.SIN_FILTRO);
+					}
+					
 					dispose();
 				}
 				else{

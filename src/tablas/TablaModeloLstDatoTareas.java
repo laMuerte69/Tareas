@@ -333,4 +333,22 @@ public class TablaModeloLstDatoTareas implements TableModel{
 		}
 	}
 
+
+	/**
+	 * Metodo para refrescar la tabla cuando esta vacia
+	 */
+	public void refresh() {
+		try{
+		    datos.clear();
+		        
+	        // Avisa a los suscriptores creando un TableModelEvent...
+	        TableModelEvent evento = new TableModelEvent (this, 0, 99, TableModelEvent.ALL_COLUMNS, TableModelEvent.UPDATE);
+	
+	        // ... y avisando a los suscriptores
+	        avisaSuscriptores (evento);
+    	} catch (Exception e) {
+    		log.log(Level.SEVERE, CLASE + "::anyadeTarea(): "  + e.getMessage());
+		}
+	}
+
 }
