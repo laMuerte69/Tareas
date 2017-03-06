@@ -17,7 +17,7 @@ public class GestorTareas {
 	protected static Logger log = Logger.getLogger(CLASE);
     private MemoriaCompartida memoria;
 
-    public GestorTareas(){
+    public GestorTareas() throws Exception{
     	memoria = MemoriaCompartida.getInstance();
     }
     

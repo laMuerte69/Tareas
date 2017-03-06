@@ -1,18 +1,32 @@
 package DAO;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import beans.DatosTareasBean;
 import beans.TareaBean;
+import database.ConexionBBDD;
 
 public class DatosBBDD {
 	private final static String CLASE = DatosBBDD.class.getName();
 	protected static Logger log = Logger.getLogger(CLASE);
+	private Connection conn;
 
-	public DatosBBDD(){
-		//TODO Crear la conexion
+	public DatosBBDD() throws Exception{
+		try{
+			conn = ConexionBBDD.conectar();
+
+			//Creamos las tablas en el caso de que no existan
+			crearTablasBBDD();
+		}
+		catch (Exception e) {
+			throw new Exception("Error al crear la conexion con la BBDD: " + e.getMessage());
+		}
 	}
 
 	/**
@@ -96,5 +110,47 @@ public class DatosBBDD {
 		}
 		return resultado;
 	}
-	
+
+	/**
+	 * Metodo para crear las tablas de la aplicacion
+	 * @param conn - conexion a la BBDD
+	 * @throws Exception
+	 */
+	private void crearTablasBBDD() throws Exception{
+		Statement      sta = null;
+		StringBuffer query = new StringBuffer();
+
+		try {
+			sta = conn.createStatement();
+
+			query.append("CREATE TABLE TAREA( ");
+			query.append("ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
+			query.append("NOMBRE VARCHAR2(40),");
+			query.append("DESCRIPCION  VARCHAR2(80),");
+			query.append("CODIGO1 VARCHAR2(12),");
+			query.append("CODIGO2 VARCHAR2(12),");
+			query.append("CODIGO3 VARCHAR2(12), ");
+			query.append("BAJA_LOGICA BOOLEAN); ");
+
+			sta.execute(query.toString());
+			log.log(Level.INFO, "Se ha creado la tabla \"Tarea\"");
+			
+			query = new StringBuffer();
+			query.append("CREATE TABLE DATOS( ");
+			query.append("ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
+			query.append("ID_TAREA INTEGER,");
+			query.append("FECHA_INICIO VARCHAR2(8),");
+			query.append("FECHA_FIN    VARCHAR2(8), ");
+			query.append("FOREIGN KEY(ID_TAREA) REFERENCES TAREA(ID)); ");
+			
+
+			sta.execute(query.toString());
+			log.log(Level.INFO, "Se ha creado la tabla \"Datos\"");
+
+		} catch (SQLException e) {
+			if(!e.getMessage().contains("already exists")){
+				throw new Exception("Error al crear las tablas");	
+			}
+		}
+	}
 }

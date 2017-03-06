@@ -23,8 +23,9 @@ public class MemoriaCompartida {
 
     /**
      * Constructor de la clase
+     * @throws Exception 
      */
-    public MemoriaCompartida(){
+    public MemoriaCompartida() throws Exception{
 		instance         = null;
 		lstDatosTareas   = new ArrayList<DatosTareasBean>();
 		hmTareas         = new HashMap<Integer, TareaBean>();
@@ -37,8 +38,9 @@ public class MemoriaCompartida {
     /**
      * Instancia unica de la clase
      * @return
+     * @throws Exception 
      */
-    public static MemoriaCompartida getInstance () {
+    public static MemoriaCompartida getInstance () throws Exception {
 		if(instance == null){
 		    instance = new MemoriaCompartida();
 		}
