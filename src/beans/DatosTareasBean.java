@@ -1,5 +1,7 @@
 package beans;
 
+import java.sql.ResultSet;
+
 import comun.Constantes;
 import comun.Utilidades;
 
@@ -9,12 +11,14 @@ public class DatosTareasBean {
 	private int idTarea;        // Identificador de la tarea a la que hace referencia este datos
     private String fechaInicio; // Formato: dd/mm/yyyy hh:mm
     private String fechaFin;
+    private boolean nueva;      //flag para saber si la tarea se ha leido de la bbdd (false) o si se ha creado desde la aplicacion (true)
     
     public DatosTareasBean(){
     	id          = 0;
     	idTarea     = 0;
     	fechaInicio = Constantes.VACIO;
     	fechaFin    = Constantes.VACIO;
+    	nueva       = true;
     }
 
 
@@ -23,7 +27,30 @@ public class DatosTareasBean {
     	idTarea     = iIdTarea;
     	fechaInicio = strFechaInicio;
     	fechaFin    = strFechaFin;
+    	nueva       = true;
     }
+
+
+	/**
+	 * Metodo para parsear los datos de una tarea cuyo origen es un ResulSet
+	 * @param rs - objeto con los datos de la tarea
+	 * @return tarea
+	 * @throws Exception 
+	 */
+	public DatosTareasBean parse(final ResultSet rs) throws Exception {
+		try{
+			id          = rs.getInt("ID");
+			idTarea     = rs.getInt("ID_TAREA");
+			fechaInicio = rs.getString("FECHA_INICIO");
+			fechaFin    = rs.getString("FECHA_FIN");
+	    	nueva       = false;
+		}
+		catch (Exception e) {
+			throw new Exception("Error al parsear los DATOS de la tarea");
+		}
+
+		return this;
+	}
 
     
 	/**
@@ -104,5 +131,20 @@ public class DatosTareasBean {
 
 		return resultado;
 	}
-    
+
+
+	/**
+	 * @return the nueva
+	 */
+	public final boolean isNueva() {
+		return nueva;
+	}
+	/**
+	 * @param nueva the nueva to set
+	 */
+	public final void setNueva(boolean nueva) {
+		this.nueva = nueva;
+	}
+
+	
 }

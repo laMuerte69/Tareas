@@ -1,5 +1,6 @@
 package beans;
 
+import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -14,6 +15,7 @@ public class TareaBean {
     private String codigo2;
     private String codigo3;
     private boolean bajaLogica; //para saber si la tarea esta de alta (visible) o no
+    private boolean nueva;      //flag para saber si la tarea se ha leido de la bbdd (false) o si se ha creado desde la aplicacion (true)
 
 
     public TareaBean(){
@@ -24,6 +26,7 @@ public class TareaBean {
     	codigo2     = Constantes.VACIO;
     	codigo3     = Constantes.VACIO;
     	bajaLogica  = false;
+    	nueva       = true;
     }
     
     public TareaBean(int iID, String strNombre, String strDesc){
@@ -34,6 +37,7 @@ public class TareaBean {
     	codigo2     = Constantes.VACIO;
     	codigo3     = Constantes.VACIO;
     	bajaLogica  = false;
+    	nueva       = true;
     }
 
 
@@ -45,7 +49,33 @@ public class TareaBean {
     	codigo2     = cod2.trim();
     	codigo3     = cod3.trim();
     	bajaLogica  = false;
+    	nueva       = true;
     }
+
+	
+	/**
+	 * Metodo para parsear los datos de una tarea cuyo origen es un ResulSet
+	 * @param rs - objeto con los datos de la tarea
+	 * @return tarea
+	 * @throws Exception 
+	 */
+	public TareaBean parse(final ResultSet rs) throws Exception {
+		try{
+			id          = rs.getInt("ID");
+			nombre      = rs.getString("NOMBRE");
+			descripcion = rs.getString("DESCRIPCION");
+			codigo1     = rs.getString("CODIGO1");
+			codigo2     = rs.getString("CODIGO2");
+			codigo3     = rs.getString("CODIGO3");
+			bajaLogica  = rs.getBoolean("BAJA_LOGICA");
+			nueva       = false;
+		}
+		catch (Exception e) {
+			throw new Exception("Error al parsear los datos de la tarea");
+		}
+
+		return this;
+	}
     
 
     /**
@@ -65,6 +95,7 @@ public class TareaBean {
 			resultado.add(codigo2.trim());
 			resultado.add(codigo3.trim());
 			resultado.add(String.valueOf(bajaLogica));
+			resultado.add(String.valueOf(nueva));
 		}
 		catch (Exception e) {
 			throw new Exception("TareaBean::getTareasListado(): " + e.getMessage());
@@ -85,6 +116,7 @@ public class TareaBean {
 		resultado.append("Codigo2: ").append(codigo2).append("\n");
 		resultado.append("Codigo3: ").append(codigo3).append("\n");
 		resultado.append("Baja:    ").append(String.valueOf(bajaLogica));
+		resultado.append("Nueva:   ").append(String.valueOf(nueva));
 		return resultado.toString();
 	}
 	
@@ -169,5 +201,17 @@ public class TareaBean {
 		this.bajaLogica = bajaLogica;
 	}
 
-	
+
+	/**
+	 * @return the nueva
+	 */
+	public final boolean isNueva() {
+		return nueva;
+	}
+	/**
+	 * @param nueva the nueva to set
+	 */
+	public final void setNueva(boolean nueva) {
+		this.nueva = nueva;
+	}
 }

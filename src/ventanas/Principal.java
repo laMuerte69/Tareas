@@ -94,8 +94,7 @@ public class Principal {
 			ventana.addWindowListener(new AccionCerrar(ventana, objGT).btnCerrar());
 		
 			//Icono de la ventana
-			//TODO: poner la ruta relativa
-			Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Workspace_solvencia\\Tareas\\Resources\\icono.png");
+			Image icon = Toolkit.getDefaultToolkit().getImage(".\\Resources\\icono.png");
 			ventana.setIconImage(icon); 
 	
 	

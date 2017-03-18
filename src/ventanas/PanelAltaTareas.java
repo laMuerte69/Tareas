@@ -176,6 +176,7 @@ public class PanelAltaTareas extends JPanel {
 						tarea = new TareaBean(nombre, descrp, tbxCodigo1.getText(), tbxCodigo2.getText(), tbxCodigo3.getText());
 						
 						if(!objGestorTareas.existeTarea(tarea)){
+							tarea.setNueva(true);
 							control.anhadeFila(tarea, false);
 							Utilidades.actualizarCBXTareas(panelPrincipal, objGestorTareas);
 							limpiar();
