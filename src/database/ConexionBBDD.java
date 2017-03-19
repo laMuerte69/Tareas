@@ -94,6 +94,7 @@ public class ConexionBBDD {
 			query.append("ID_TAREA INTEGER,");
 			query.append("FECHA_INICIO VARCHAR2(8),");
 			query.append("FECHA_FIN    VARCHAR2(8), ");
+			query.append("DURACION     VARCHAR2(5), ");
 			query.append("FOREIGN KEY(ID_TAREA) REFERENCES TAREA(ID)); ");
 			
 
@@ -231,11 +232,12 @@ public class ConexionBBDD {
 
 		try{
 			consulta.append("INSERT INTO DATOS ");
-			consulta.append("(ID, ID_TAREA, FECHA_INICIO, FECHA_FIN) VALUES ");
+			consulta.append("(ID, ID_TAREA, FECHA_INICIO, FECHA_FIN, DURACION) VALUES ");
 			consulta.append("('").append(datosTarea.getId()).append("' , '");
 			consulta.append(datosTarea.getIdTarea()).append("' , '");
 			consulta.append(datosTarea.getFechaInicio()).append("' , '");
-			consulta.append(datosTarea.getFechaFin()).append("'");
+			consulta.append(datosTarea.getFechaFin()).append("' , '");
+			consulta.append(datosTarea.getDuracion()).append("'");
 			consulta.append(");");
 
 			log.log(Level.CONFIG, consulta.toString());
@@ -266,7 +268,8 @@ public class ConexionBBDD {
 			consulta.append("ID = \'").append(datosTarea.getId()).append("\', ");
 			consulta.append("ID_TAREA = \'").append(datosTarea.getIdTarea()).append("\', ");
 			consulta.append("FECHA_INICIO = \'").append(datosTarea.getFechaInicio()).append("\', ");
-			consulta.append("FECHA_FIN = \'").append(datosTarea.getFechaFin()).append("\' ");
+			consulta.append("FECHA_FIN = \'").append(datosTarea.getFechaInicio()).append("\', ");
+			consulta.append("DURACION = \'").append(datosTarea.getDuracion()).append("\' ");
 			consulta.append("WHERE ID = \'").append(datosTarea.getId()).append("\';");
 
 			sta = conn.createStatement();

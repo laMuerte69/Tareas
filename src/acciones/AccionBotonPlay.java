@@ -106,8 +106,8 @@ public class AccionBotonPlay {
 						
 						//Paramos el tiempo
 						dTarea.setFechaFin(Utilidades.obtenerFecha());
+						dTarea.contarTiempo();
 						objGT.setDatosTarea(dTarea);
-						//TODO añadir datos tarea  a la lst
 						dTarea = null;
 					}
 					catch (Exception e) {

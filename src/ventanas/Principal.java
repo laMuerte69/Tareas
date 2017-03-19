@@ -5,6 +5,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -32,7 +36,8 @@ public class Principal {
 	private JComboBox<String> cbxTareas;
 	private JFrame ventana;
 	private JPanel panelPrincipal;
-
+	private GregorianCalendar calendario;
+	private JLabel  lbTiempo;
     
     /**
      * Constructor por defecto
@@ -200,9 +205,20 @@ public class Principal {
      * @throws Exception
      */
     private void crearTiempo(JPanel panelSuperior) throws Exception {
-		JLabel  lbTiempo = new JLabel("00:00");
+		lbTiempo = new JLabel("00:00");
 		lbTiempo.setName("lblTiempo");
 		lbTiempo.setText(Utilidades.obtenerHora());
+		calendario = new GregorianCalendar();
+
+		javax.swing.Timer timer = new javax.swing.Timer(1000, new ActionListener() {
+			@ Override
+			public void actionPerformed(java.awt.event.ActionEvent ae) {
+				calendario.setTime(new Date());				
+				lbTiempo.setText(Utilidades.obtenerHora(calendario.get(Calendar.HOUR_OF_DAY), calendario.get(Calendar.MINUTE)));
+			}
+		});
+
+		timer.start();
 		panelSuperior.add(lbTiempo);
     }
 

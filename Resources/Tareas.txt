@@ -1,8 +1,3 @@
-he creado la conexion a la BBDD. Ahora queda hacer todas las consultas y guardado de datos de la misma
-
-=> No se crear los datos de las tareas al darle al PLAY
-
-- En los datos de las tareas, hay que añadir un nuevo campo "TIEMPO", que indique la duracion (f. inicio - f. fin) de la tarea
 
 - El log debe volcar a fichero
 - Repasar los TODO
@@ -10,4 +5,5 @@ he creado la conexion a la BBDD. Ahora queda hacer todas las consultas y guardad
 - Gestionar las tareas con los tiempos
 - Exportar a Excel
 - Importar a Excel
-- Crar hilo que actualice el tiempo cada 60 segundos
+- Crear el filtro de "tarea"
+- Cambiar el label de la pestaña "Datos" por "Tiempos"

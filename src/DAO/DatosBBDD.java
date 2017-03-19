@@ -34,12 +34,12 @@ public class DatosBBDD {
 	 */
 	public void guardarTareas(final TareaBean tarea) throws Exception {
 		if(tarea.isNueva()){
-			if(bbdd.insertarTarea(tarea) != 1){
+			if(bbdd.insertarTarea(tarea) < 1){
 				throw new Exception("Error al guardar la tarea (INS): " + tarea.info());
 			}
 		}
 		else{
-			if(bbdd.actualizarTarea(tarea) != 1){
+			if(bbdd.actualizarTarea(tarea) < 1){
 				throw new Exception("Error al guardar la tarea (UPD): " + tarea.info());
 			}
 		}
@@ -54,12 +54,12 @@ public class DatosBBDD {
 	 */
 	public void guardarDatosTarea(final DatosTareasBean datosTarea) throws Exception {
 		if(datosTarea.isNueva()){
-			if(bbdd.insertarDatosTarea(datosTarea) != 1){
+			if(bbdd.insertarDatosTarea(datosTarea) < 1){
 				throw new Exception("Error al guardar los datos de la tarea (INS)");
 			}
 		}
 		else{
-			if(bbdd.actualizarDatosTarea(datosTarea) != 1){
+			if(bbdd.actualizarDatosTarea(datosTarea) < 1){
 				throw new Exception("Error al guardar los datos de la tarea (UPD)");
 			}
 		}

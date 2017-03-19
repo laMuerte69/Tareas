@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import org.apache.commons.lang3.StringUtils;
+
 import logica.GestorTareas;
 
 public class Utilidades {
@@ -25,7 +27,7 @@ public class Utilidades {
 
 		try{
 			Calendar c1 = GregorianCalendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			resultado = sdf.format(c1.getTime());
 		}
 		catch (Exception e) {
@@ -70,6 +72,18 @@ public class Utilidades {
 		return resultado;
 	}
 	
+
+	/**
+	 * Metodo para formatear la hora
+	 * @param hora - valor numerico de la hora
+	 * @param minutos - valor numerico de los minutos
+	 * @return hora formateada HH:mm
+	 */
+	public static String obtenerHora(long hora, long minutos) {
+		return lpad(hora, 2) + ":" + lpad(minutos, 2);
+	}
+
+
 	/**
 	 * Metodo para actualizar las tareas del combox del panel principal
 	 * @param objGT 
@@ -113,6 +127,7 @@ public class Utilidades {
 		}
 	}
 
+
 	/**
 	 * Metood para obtener el valor de la fecha en formato numerico
 	 * @param year  - año
@@ -122,5 +137,16 @@ public class Utilidades {
 	 */
 	public static int fechaNumerica(int year, int month, int day) {
 		return year * 10000 + month * 100 + day;
+	}
+
+
+	/**
+	 * Metodo para poner ceros a la izda (rellenar con 0)
+	 * @param valor - valor a poner
+	 * @param tam   - tamaño final de la cadena
+	 * @return resultado
+	 */
+	public static String lpad(long valor, int tam) {
+		return StringUtils.leftPad(String.valueOf(valor), tam, '0');
 	}
 }

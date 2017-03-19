@@ -1,6 +1,8 @@
 package beans;
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import comun.Constantes;
 import comun.Utilidades;
@@ -9,15 +11,17 @@ public class DatosTareasBean {
 
 	private int id;
 	private int idTarea;        // Identificador de la tarea a la que hace referencia este datos
-    private String fechaInicio; // Formato: dd/mm/yyyy hh:mm
+    private String fechaInicio; // Formato: dd/MM/yyyy HH:mm
     private String fechaFin;
-    private boolean nueva;      //flag para saber si la tarea se ha leido de la bbdd (false) o si se ha creado desde la aplicacion (true)
+    private String duracion;    // Formato: hh:mm
+    private boolean nueva;      // flag para saber si la tarea se ha leido de la bbdd (false) o si se ha creado desde la aplicacion (true)
     
     public DatosTareasBean(){
     	id          = 0;
     	idTarea     = 0;
     	fechaInicio = Constantes.VACIO;
     	fechaFin    = Constantes.VACIO;
+    	duracion    = "00:00";
     	nueva       = true;
     }
 
@@ -27,6 +31,7 @@ public class DatosTareasBean {
     	idTarea     = iIdTarea;
     	fechaInicio = strFechaInicio;
     	fechaFin    = strFechaFin;
+    	duracion    = "00:00";
     	nueva       = true;
     }
 
@@ -43,6 +48,7 @@ public class DatosTareasBean {
 			idTarea     = rs.getInt("ID_TAREA");
 			fechaInicio = rs.getString("FECHA_INICIO");
 			fechaFin    = rs.getString("FECHA_FIN");
+			duracion    = rs.getString("DURACION");
 	    	nueva       = false;
 		}
 		catch (Exception e) {
@@ -50,6 +56,45 @@ public class DatosTareasBean {
 		}
 
 		return this;
+	}
+
+
+	/**
+	 * Metodo para contar el tiempo desde que se inicia la tarea hasta que se finaliza 
+	 * @throws Exception 
+	 */
+	public void contarTiempo() throws Exception {
+
+        long diff         = 0;
+        long diffMinutos  = 0;
+        long restominutos = 0; 
+        long diffHoras    = 0;
+        SimpleDateFormat sdf = null;
+        Calendar cinicio  = null;
+        Calendar cfinal   = null;
+
+		try{
+			cinicio = Calendar.getInstance();
+	        cfinal  = Calendar.getInstance();
+
+            sdf     = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            cinicio.setTime(sdf.parse(fechaInicio));
+            cfinal.setTime(sdf.parse(fechaFin));
+ 
+            diff = cfinal.getTimeInMillis() - cinicio.getTimeInMillis();
+ 
+            // calcular la diferencia en minutos
+            diffMinutos =  Math.abs (diff / (60 * 1000));
+            restominutos = diffMinutos%60;
+ 
+            // calcular la diferencia en horas 
+            diffHoras =   (diff / (60 * 60 * 1000));
+ 
+            duracion = Utilidades.obtenerHora(diffHoras, restominutos);
+		}
+		catch (Exception e) {
+			throw new Exception("Error al contar la duracion de la tarea: " + e.getMessage());
+		}
 	}
 
     
@@ -144,6 +189,14 @@ public class DatosTareasBean {
 	 */
 	public final void setNueva(boolean nueva) {
 		this.nueva = nueva;
+	}
+
+
+	/**
+	 * @return the duracion
+	 */
+	public final String getDuracion() {
+		return duracion;
 	}
 
 	
